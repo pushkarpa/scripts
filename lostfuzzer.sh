@@ -27,7 +27,7 @@ usage() {
 }
 
 check_tools() {
-    REQUIRED_TOOLS=("gau" "uro" "httpx-toolkit" "nuclei")
+    REQUIRED_TOOLS=("gau" "uro" "httpx" "nuclei")
     for tool in "${REQUIRED_TOOLS[@]}"; do
         if ! command -v "$tool" &>/dev/null; then
             echo -e "${RED}[ERROR] $tool is not installed. Please install it and try again.${RESET}"
@@ -105,7 +105,7 @@ grep -E '\?[^=]+=.+$' "$GAU_FILE" | uro | awk '!seen[$0]++' > "$FILTERED_URLS_FI
 
 # ===== Step 3: Live check =====
 echo -e "${GREEN}[INFO] Checking live URLs...${RESET}"
-httpx-toolkit -silent -t 300 -rl 200 < "$FILTERED_URLS_FILE" > "$LIVE_URLS"
+httpx -silent -t 300 -rl 200 < "$FILTERED_URLS_FILE" > "$LIVE_URLS"
 
 # ===== Step 4: Run nuclei =====
 echo -e "${GREEN}[INFO] Running nuclei scan...${RESET}"
